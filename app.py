@@ -8,7 +8,7 @@ mongo = PyMongo(app)
 @app.route("/", methods = ["GET", "POST"])
 def index():
     if "user_id" not in session:
-        session["user_id"] = mongo.db.Carts.insert_one({"cart": []}).inserted_id
+        session["user_id"] = str(mongo.db.Carts.insert_one({"cart": []}).inserted_id)
     cart_count = len(mongo.db.Carts.find_one({"_id": ObjectId(session["user_id"])})["cart"])
     foods = list(mongo.db.Foods.find())
     return render_template("index.html", foods = foods, cart_count = cart_count)
